@@ -21,9 +21,11 @@ app.use(express.static('public'));
 app.get('*', (req, res) => {
   const store = createStore(req);
 
-  const promises = matchRoutes(Routes, req.path).map(({ route }) => {
-    return route.loadData ? route.loadData(store) : null;
-  })
+  const promises = matchRoutes(Routes, req.path)
+    .map(({ route }) => {
+      return route.loadData ? route.loadData(store) : null;
+    })
+    //resolve promise regardless if it fails
     .map(promise => {
       if(promise) {
         return new Promise((resolve, reject) => {
@@ -32,24 +34,27 @@ app.get('*', (req, res) => {
       }
     });
 
-  Promise.all(promises).then(() => {
-    const context = {};
-    const html = renderHelper(req, store, context);
+  Promise.all(promises)
+    .then(() => {
+      const context = {};
+      const html = renderHelper(req, store, context);
 
-    if(context.url){
-      return res.redirect(301, context.url);
-    }
+      if(context.url){
+        return res.redirect(301, context.url);
+      }
 
-    if(context.notFound) {
-      res.status(404)
-    }
+      if(context.notFound) {
+        res.status(404)
+      }
 
-    res.send(html);
-  })
+      res.send(html);
+    })
 
-  .catch(
-
-  )
+  /*
+  DO NOT USE CATCH STATEMENT,
+   - this is a crud solution, instead use HOC's
+   - .catch(err => res.status(404).send(error));
+  */
 });
 
 app.listen(port, () => {

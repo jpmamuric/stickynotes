@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { connect }          from 'react-redux';
+import { Helmet }           from 'react-helmet';
 
 import { fetchStickyNotes } from '../../redux/actions/sticky_notes';
-import { Helmet } from 'react-helmet';
+
+import Note from '../components/note/Note';
+import AddNote from '../components/note/AddNote';
 import './css/StickyNote.css';
 
 class StickyNoteList extends Component {
@@ -12,7 +15,7 @@ class StickyNoteList extends Component {
 
   renderStickyNotes() {
     return this.props.list.map( note => {
-      return <div key={note._id} className='sticky_note flexbox'>{note.message}</div>
+      return <Note key={note._id} note={note} />
     });
   }
 
@@ -27,6 +30,7 @@ class StickyNoteList extends Component {
           <title>{`${this.props.list.length} Sticky Notes in Dashboard`}</title>
           <meta property="og:title" content="Sticky Note App" />
         </Helmet>
+        <AddNote clicked={this.props.isAdding}/>
         <div className='sticky_note_container flexbox'>
           { this.renderStickyNotes() }
         </div>
@@ -37,11 +41,14 @@ class StickyNoteList extends Component {
 }
 
 const mapStateToProps = ({ stickynotes }) => {
-  const { list } = stickynotes;
-  return { list };
+  const { list, isAdding, text } = stickynotes;
+  return { list, isAdding, text};
 }
 
 export default {
-  component: connect(mapStateToProps, { fetchStickyNotes })(StickyNoteList),
+  component: connect(
+    mapStateToProps,
+    { fetchStickyNotes }
+  )(StickyNoteList),
   loadData: ({ dispatch }) => dispatch(fetchStickyNotes())
 }

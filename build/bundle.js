@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 8);
+/******/ 	return __webpack_require__(__webpack_require__.s = 11);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -81,7 +81,12 @@ Object.defineProperty(exports, "__esModule", {
 });
 var FETCH_USERS = exports.FETCH_USERS = 'FETCH_USERS';
 var FETCH_USER = exports.FETCH_USER = 'FETCH_USER';
-var FETCH_STICK_NOTES = exports.FETCH_STICK_NOTES = 'FETCH_STICK_NOTES';
+var FETCH_STICKY_NOTES = exports.FETCH_STICKY_NOTES = 'FETCH_STICKY_NOTES';
+var ADD_STICKY_NOTES = exports.ADD_STICKY_NOTES = 'ADD_STICKY_NOTES';
+var CANCEL_STICKY_NOTES = exports.CANCEL_STICKY_NOTES = 'CANCEL_STICKY_NOTES';
+var SAVE_STICKY_NOTE = exports.SAVE_STICKY_NOTE = 'SAVE_STICKY_NOTE';
+var ERROR_STICKY_NOTE = exports.ERROR_STICKY_NOTE = 'ERROR_STICKY_NOTE';
+var INPUT_CHANGE_STICKY_NOTE = exports.INPUT_CHANGE_STICKY_NOTE = 'INPUT_CHANGE_STICKY_NOTE';
 
 /***/ }),
 /* 2 */
@@ -103,6 +108,12 @@ module.exports = require("react-helmet");
 
 /***/ }),
 /* 5 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -118,19 +129,19 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _App = __webpack_require__(12);
+var _App = __webpack_require__(15);
 
 var _App2 = _interopRequireDefault(_App);
 
-var _StickyNotePage = __webpack_require__(16);
+var _StickyNotePage = __webpack_require__(19);
 
 var _StickyNotePage2 = _interopRequireDefault(_StickyNotePage);
 
-var _UserList = __webpack_require__(19);
+var _UserList = __webpack_require__(23);
 
 var _UserList2 = _interopRequireDefault(_UserList);
 
-var _NotFoundPage = __webpack_require__(22);
+var _NotFoundPage = __webpack_require__(26);
 
 var _NotFoundPage2 = _interopRequireDefault(_NotFoundPage);
 
@@ -145,45 +156,148 @@ exports.default = [_extends({}, _App2.default, {
 })];
 
 /***/ }),
-/* 6 */
-/***/ (function(module, exports) {
-
-module.exports = require("react-router-dom");
-
-/***/ }),
 /* 7 */
-/***/ (function(module, exports) {
-
-module.exports = require("redux");
-
-/***/ }),
-/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(9);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.cancelStickyNote = exports.addStickyNote = exports.handleInputStickyChange = exports.saveStickyNote = exports.fetchStickyNotes = undefined;
 
-var _express = __webpack_require__(10);
+var _types = __webpack_require__(1);
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+var fetchStickyNotes = exports.fetchStickyNotes = function fetchStickyNotes() {
+  return function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(dispatch, getState, api) {
+      var res;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return api.get('/api/stickynotes');
+
+            case 2:
+              res = _context.sent;
+
+              dispatch({ type: _types.FETCH_STICKY_NOTES, payload: res.data });
+
+            case 4:
+            case 'end':
+              return _context.stop();
+          }
+        }
+      }, _callee, undefined);
+    }));
+
+    return function (_x, _x2, _x3) {
+      return _ref.apply(this, arguments);
+    };
+  }();
+};
+
+var saveStickyNote = exports.saveStickyNote = function saveStickyNote(message) {
+  return function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(dispatch, getState, api) {
+      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              console.log(message);
+              try {
+                // await api.post('/api/stickynotes', { message })
+                // const res = await api.get('/api/stickynotes');
+                // dispatch({ type: FETCH_STICKY_NOTES, payload: res.data });
+              } catch (err) {
+                dispatch({ type: _types.ERROR_STICKY_NOTE, payload: err });
+              }
+
+              dispatch({ type: _types.FETCH_STICKY_NOTES });
+
+            case 3:
+            case 'end':
+              return _context2.stop();
+          }
+        }
+      }, _callee2, undefined);
+    }));
+
+    return function (_x4, _x5, _x6) {
+      return _ref2.apply(this, arguments);
+    };
+  }();
+};
+
+var handleInputStickyChange = exports.handleInputStickyChange = function handleInputStickyChange(text) {
+  return function (dispatch) {
+    console.log(text);
+    dispatch({ type: _types.INPUT_CHANGE_STICKY_NOTE, payload: text });
+  };
+};
+
+var addStickyNote = exports.addStickyNote = function addStickyNote(message) {
+  return function (dispatch) {
+    dispatch({ type: _types.ADD_STICKY_NOTES });
+  };
+};
+
+var cancelStickyNote = exports.cancelStickyNote = function cancelStickyNote() {
+  return function (dispatch) {
+    dispatch({ type: _types.CANCEL_STICKY_NOTES });
+  };
+};
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
+
+module.exports = require("react-router-dom");
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports) {
+
+module.exports = require("redux");
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+__webpack_require__(12);
+
+var _express = __webpack_require__(13);
 
 var _express2 = _interopRequireDefault(_express);
 
 var _reactRouterConfig = __webpack_require__(3);
 
-var _expressHttpProxy = __webpack_require__(11);
+var _expressHttpProxy = __webpack_require__(14);
 
 var _expressHttpProxy2 = _interopRequireDefault(_expressHttpProxy);
 
-var _routes = __webpack_require__(5);
+var _routes = __webpack_require__(6);
 
 var _routes2 = _interopRequireDefault(_routes);
 
-var _renderHelper = __webpack_require__(23);
+var _renderHelper = __webpack_require__(27);
 
 var _renderHelper2 = _interopRequireDefault(_renderHelper);
 
-var _createStoreHelper = __webpack_require__(26);
+var _createStoreHelper = __webpack_require__(30);
 
 var _createStoreHelper2 = _interopRequireDefault(_createStoreHelper);
 
@@ -208,7 +322,9 @@ app.get('*', function (req, res) {
     var route = _ref.route;
 
     return route.loadData ? route.loadData(store) : null;
-  }).map(function (promise) {
+  })
+  //resolve promise regardless if it fails
+  .map(function (promise) {
     if (promise) {
       return new Promise(function (resolve, reject) {
         promise.then(resolve).catch(resolve);
@@ -229,7 +345,13 @@ app.get('*', function (req, res) {
     }
 
     res.send(html);
-  }).catch();
+  });
+
+  /*
+  DO NOT USE CATCH STATEMENT,
+   - this is a crud solution, instead use HOC's
+   - .catch(err => res.status(404).send(error));
+  */
 });
 
 app.listen(port, function () {
@@ -237,25 +359,25 @@ app.listen(port, function () {
 });
 
 /***/ }),
-/* 9 */
+/* 12 */
 /***/ (function(module, exports) {
 
 module.exports = require("babel-polyfill");
 
 /***/ }),
-/* 10 */
+/* 13 */
 /***/ (function(module, exports) {
 
 module.exports = require("express");
 
 /***/ }),
-/* 11 */
+/* 14 */
 /***/ (function(module, exports) {
 
 module.exports = require("express-http-proxy");
 
 /***/ }),
-/* 12 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -271,11 +393,11 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterConfig = __webpack_require__(3);
 
-var _Header = __webpack_require__(13);
+var _Header = __webpack_require__(16);
 
 var _Header2 = _interopRequireDefault(_Header);
 
-var _auth = __webpack_require__(15);
+var _auth = __webpack_require__(18);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -299,7 +421,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 13 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -313,7 +435,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-__webpack_require__(14);
+__webpack_require__(17);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -328,13 +450,13 @@ var Header = function Header() {
 exports.default = Header;
 
 /***/ }),
-/* 14 */
+/* 17 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 15 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -380,7 +502,7 @@ var fetchUser = exports.fetchUser = function fetchUser() {
 };
 
 /***/ }),
-/* 16 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -398,11 +520,19 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(2);
 
-var _sticky_notes = __webpack_require__(17);
-
 var _reactHelmet = __webpack_require__(4);
 
-__webpack_require__(18);
+var _sticky_notes = __webpack_require__(7);
+
+var _Note = __webpack_require__(20);
+
+var _Note2 = _interopRequireDefault(_Note);
+
+var _AddNote = __webpack_require__(22);
+
+var _AddNote2 = _interopRequireDefault(_AddNote);
+
+__webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -430,11 +560,7 @@ var StickyNoteList = function (_Component) {
     key: 'renderStickyNotes',
     value: function renderStickyNotes() {
       return this.props.list.map(function (note) {
-        return _react2.default.createElement(
-          'div',
-          { key: note._id, className: 'sticky_note flexbox' },
-          note.message
-        );
+        return _react2.default.createElement(_Note2.default, { key: note._id, note: note });
       });
     }
   }, {
@@ -461,6 +587,7 @@ var StickyNoteList = function (_Component) {
           ),
           _react2.default.createElement('meta', { property: 'og:title', content: 'Sticky Note App' })
         ),
+        _react2.default.createElement(_AddNote2.default, { clicked: this.props.isAdding }),
         _react2.default.createElement(
           'div',
           { className: 'sticky_note_container flexbox' },
@@ -475,9 +602,11 @@ var StickyNoteList = function (_Component) {
 
 var mapStateToProps = function mapStateToProps(_ref) {
   var stickynotes = _ref.stickynotes;
-  var list = stickynotes.list;
+  var list = stickynotes.list,
+      isAdding = stickynotes.isAdding,
+      text = stickynotes.text;
 
-  return { list: list };
+  return { list: list, isAdding: isAdding, text: text };
 };
 
 exports.default = {
@@ -489,7 +618,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 17 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -498,50 +627,99 @@ exports.default = {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.fetchStickyNotes = undefined;
 
-var _types = __webpack_require__(1);
+var _react = __webpack_require__(0);
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+var _react2 = _interopRequireDefault(_react);
 
-var fetchStickyNotes = exports.fetchStickyNotes = function fetchStickyNotes() {
-  return function () {
-    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(dispatch, getState, api) {
-      var res;
-      return regeneratorRuntime.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              _context.next = 2;
-              return api.get('/api/stickynotes');
+var _reactDnd = __webpack_require__(21);
 
-            case 2:
-              res = _context.sent;
+__webpack_require__(5);
 
-              dispatch({ type: _types.FETCH_STICK_NOTES, payload: res.data });
+__webpack_require__(8);
 
-            case 4:
-            case 'end':
-              return _context.stop();
-          }
-        }
-      }, _callee, undefined);
-    }));
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-    return function (_x, _x2, _x3) {
-      return _ref.apply(this, arguments);
-    };
-  }();
+var Note = function Note(_ref) {
+  var note = _ref.note;
+  var message = note.message,
+      _id = note._id;
+
+  var handleOnDragStart = function handleOnDragStart(event) {};
+
+  var handleOnDragOver = function handleOnDragOver(event) {};
+
+  var handleOnDrop = function handleOnDrop(event) {};
+
+  return _react2.default.createElement(
+    'div',
+    {
+      className: 'sticky_note flexbox',
+      draggable: 'true',
+      onDragStart: handleOnDragStart,
+      onDragOver: handleOnDragOver,
+      onDrop: handleOnDrop },
+    message
+  );
 };
 
+exports.default = Note;
+
 /***/ }),
-/* 18 */
+/* 21 */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
+module.exports = require("react-dnd");
 
 /***/ }),
-/* 19 */
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(2);
+
+var _sticky_notes = __webpack_require__(7);
+
+__webpack_require__(5);
+
+__webpack_require__(8);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var AddNote = function AddNote(_ref) {
+  var addStickyNote = _ref.addStickyNote,
+      clicked = _ref.clicked;
+
+
+  return _react2.default.createElement(
+    'div',
+    {
+      className: 'add_sticky_note flexbox',
+      onClick: function onClick() {
+        return addStickyNote();
+      } },
+    clicked ? _react2.default.createElement('textarea', { className: 'input_sticky_note', placeholder: 'type something here' }) : _react2.default.createElement(
+      'div',
+      null,
+      '+'
+    )
+  );
+};
+
+exports.default = (0, _reactRedux.connect)(null, { addStickyNote: _sticky_notes.addStickyNote })(AddNote);
+
+/***/ }),
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -559,9 +737,9 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(2);
 
-var _user = __webpack_require__(20);
+var _user = __webpack_require__(24);
 
-var _require_auth = __webpack_require__(21);
+var _require_auth = __webpack_require__(25);
 
 var _require_auth2 = _interopRequireDefault(_require_auth);
 
@@ -648,7 +826,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 20 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -696,7 +874,7 @@ var fetchUsers = exports.fetchUsers = function fetchUsers() {
 };
 
 /***/ }),
-/* 21 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -714,7 +892,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(2);
 
-var _reactRouterDom = __webpack_require__(6);
+var _reactRouterDom = __webpack_require__(9);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -766,7 +944,7 @@ exports.default = function (ComposedComponent) {
 };
 
 /***/ }),
-/* 22 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -800,7 +978,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 23 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -814,21 +992,21 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _server = __webpack_require__(24);
+var _server = __webpack_require__(28);
 
-var _reactRouterDom = __webpack_require__(6);
+var _reactRouterDom = __webpack_require__(9);
 
 var _reactRedux = __webpack_require__(2);
 
 var _reactRouterConfig = __webpack_require__(3);
 
-var _serializeJavascript = __webpack_require__(25);
+var _serializeJavascript = __webpack_require__(29);
 
 var _serializeJavascript2 = _interopRequireDefault(_serializeJavascript);
 
 var _reactHelmet = __webpack_require__(4);
 
-var _routes = __webpack_require__(5);
+var _routes = __webpack_require__(6);
 
 var _routes2 = _interopRequireDefault(_routes);
 
@@ -855,19 +1033,19 @@ exports.default = function (req, store, context) {
 };
 
 /***/ }),
-/* 24 */
+/* 28 */
 /***/ (function(module, exports) {
 
 module.exports = require("react-dom/server");
 
 /***/ }),
-/* 25 */
+/* 29 */
 /***/ (function(module, exports) {
 
 module.exports = require("serialize-javascript");
 
 /***/ }),
-/* 26 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -877,17 +1055,17 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _redux = __webpack_require__(7);
+var _redux = __webpack_require__(10);
 
-var _reduxThunk = __webpack_require__(27);
+var _reduxThunk = __webpack_require__(31);
 
 var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
-var _axios = __webpack_require__(28);
+var _axios = __webpack_require__(32);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _reducers = __webpack_require__(29);
+var _reducers = __webpack_require__(33);
 
 var _reducers2 = _interopRequireDefault(_reducers);
 
@@ -904,19 +1082,19 @@ exports.default = function (req) {
 };
 
 /***/ }),
-/* 27 */
+/* 31 */
 /***/ (function(module, exports) {
 
 module.exports = require("redux-thunk");
 
 /***/ }),
-/* 28 */
+/* 32 */
 /***/ (function(module, exports) {
 
 module.exports = require("axios");
 
 /***/ }),
-/* 29 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -926,17 +1104,17 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _redux = __webpack_require__(7);
+var _redux = __webpack_require__(10);
 
-var _reducer_users = __webpack_require__(30);
+var _reducer_users = __webpack_require__(34);
 
 var _reducer_users2 = _interopRequireDefault(_reducer_users);
 
-var _reducer_auth = __webpack_require__(31);
+var _reducer_auth = __webpack_require__(35);
 
 var _reducer_auth2 = _interopRequireDefault(_reducer_auth);
 
-var _reducer_stickynotes = __webpack_require__(32);
+var _reducer_stickynotes = __webpack_require__(36);
 
 var _reducer_stickynotes2 = _interopRequireDefault(_reducer_stickynotes);
 
@@ -951,7 +1129,7 @@ var rootReducer = (0, _redux.combineReducers)({
 exports.default = rootReducer;
 
 /***/ }),
-/* 30 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -982,7 +1160,7 @@ exports.default = function () {
 };
 
 /***/ }),
-/* 31 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1013,7 +1191,7 @@ exports.default = function () {
 };
 
 /***/ }),
-/* 32 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1028,7 +1206,10 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 var _types = __webpack_require__(1);
 
 var initialState = {
-  list: []
+  list: [],
+  isAdding: false,
+  error: '',
+  text: ''
 };
 
 exports.default = function () {
@@ -1036,8 +1217,16 @@ exports.default = function () {
   var action = arguments[1];
 
   switch (action.type) {
-    case _types.FETCH_STICK_NOTES:
+    case _types.FETCH_STICKY_NOTES:
       return _extends({}, state, { list: action.payload });
+    case _types.ADD_STICKY_NOTES:
+      return _extends({}, state, { isAdding: true });
+    case _types.CANCEL_STICKY_NOTES:
+      return _extends({}, state, { isAdding: false });
+    case _types.ERROR_STICKY_NOTE:
+      return _extends({}, state, { error: action.payload });
+    case _types.INPUT_CHANGE_STICKY_NOTE:
+      return _extends({}, state, { text: action.payload });
     default:
       return state;
   }
